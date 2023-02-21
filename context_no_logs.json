@@ -1,0 +1,17 @@
+{
+  "context": {
+    "appVersion": "string",
+    "judi": "string",
+    "osVersion": "string",
+    "deviceModel": "string",
+    "platform": "string",
+    "deviceId": "string",
+    "analyticsGameName": "string",
+    "analyticsMarket": "string",
+    "store": "string",
+    "locale": "string",
+    "timezone": 0,
+    "socialId": "string",
+    "currentLevel": 0
+  }
+}
