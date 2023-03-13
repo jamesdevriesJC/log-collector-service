@@ -11,8 +11,9 @@ function cb_split(tag, timestamp, record)
     end
 
     -- add context to all log entries
-    for i, log in ipairs(record[LOGS_KEY]) do
-	log[CONTEXT_KEY] = context
+    local logtable = {}
+    for _, log in pairs(logs) do
+        table.insert(logtable, { log=log, context=context })
     end
-    return 2, timestamp, record[LOGS_KEY]
+    return 2, timestamp, logtable
 end
