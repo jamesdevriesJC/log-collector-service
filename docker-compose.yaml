@@ -9,30 +9,20 @@ services:
     ports:
       - "8888:8888"
     depends_on:
-      - kafka
+      - elasticsearch
 
-  kafka: &kafka
-    image: landoop/fast-data-dev
-    environment:
-      KAFKA_LISTENERS: 'DOCKER_LISTENER://kafka:29092,PLAINTEXT://:9092'
-      KAFKA_ADVERTISED_LISTENERS: 'DOCKER_LISTENER://kafka:29092,PLAINTEXT://localhost:9092'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'DOCKER_LISTENER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_LISTENER
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
-      RUNTESTS: 0
-      FORWARDLOGS: 1
-      SAMPLEDATA: 0
+  elasticsearch:
+    image: elasticsearch:7.6.2
     ports:
-      - 2181:2181             # zookeeper
-      - 3030:3030             # landoop UI
-      - 8081-8083:8081-8083   # scheme registry, REST proxy, kafka connect
-      - 9581-9585:9581-9585   # JMX
-      - 9092:9092             # kafka brokers
-    depends_on:
-      - kafka-topic-init-1
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
 
-  kafka-topic-init-1: &topic-init
-    <<: *kafka
-    ports: []
-    entrypoint: ["kafka-topics", "--bootstrap-server", "kafka:29092", "--create", "--topic", "test", "--partitions", "3", "--replication-factor", "1", "--if-not-exists"]
-    depends_on: []
+  kibana:
+    image: kibana:7.6.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
