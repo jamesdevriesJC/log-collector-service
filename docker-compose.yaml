@@ -3,6 +3,8 @@ version: "3.7"
 services:
   fluent-bit:
     image: fluent/fluent-bit
+    environment:
+      - ES_HOST=elasticsearch
     volumes:
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
       - ./expand_logs.lua:/fluent-bit/etc/expand_logs.lua
