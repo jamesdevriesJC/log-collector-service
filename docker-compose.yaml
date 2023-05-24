@@ -20,6 +20,8 @@ services:
       - "9200:9200"
     environment:
       - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2048m"
+    mem_limit: 4096m
 
   kibana:
     image: kibana:6.5.4
