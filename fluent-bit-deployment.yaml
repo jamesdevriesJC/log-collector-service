@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml --volumes hostPath
+    kompose.service.expose: "true"
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fluent-bit
+  name: fluent-bit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: fluent-bit
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yaml --volumes hostPath
+        kompose.service.expose: "true"
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/fluent-bit-default: "true"
+        io.kompose.service: fluent-bit
+    spec:
+      containers:
+        - env:
+            - name: ES_HOST
+              value: elasticsearch
+          image: fluent/fluent-bit
+          name: fluent-bit
+          ports:
+            - containerPort: 8888
+            - containerPort: 2020
+          resources: 
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+          volumeMounts:
+            - mountPath: /fluent-bit/etc
+              name: fluent-bit-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /Users/jamesdevries/learning/fluent-bit/etc
+          name: fluent-bit-hostpath0
+status: {}

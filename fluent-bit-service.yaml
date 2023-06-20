@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml --volumes hostPath
+    kompose.service.expose: "true"
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fluent-bit
+  name: fluent-bit
+spec:
+  ports:
+    - name: "8888"
+      port: 8888
+      targetPort: 8888
+    - name: "2020"
+      port: 2020
+      targetPort: 2020
+  selector:
+    io.kompose.service: fluent-bit
+status:
+  loadBalancer: {}

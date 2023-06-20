@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yaml --volumes hostPath
+    kompose.service.expose: "true"
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: fluent-bit
+  name: fluent-bit
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: fluent-bit
+                port:
+                  number: 8888
+            path: /
+            pathType: Prefix
+status:
+  loadBalancer: {}
