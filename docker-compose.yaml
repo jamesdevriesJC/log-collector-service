@@ -1,8 +1,6 @@
-version: "3.7"
-
 services:
   fluent-bit:
-    image: fluent/fluent-bit
+    image: fluent/fluent-bit:3.0.4
     environment:
       - ES_HOST=elasticsearch
     volumes:
